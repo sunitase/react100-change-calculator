@@ -18,7 +18,7 @@ class App extends Component {
       output: ''}
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.calculatedue = this.changedue.bind(this);  
+    this.calculatedue = this.calculatedue.bind(this);  
   }
 
   handleChange(event) {
@@ -35,34 +35,59 @@ class App extends Component {
   calculatedue(){
     const amountDue = this.state.amountDue;
     const amountReceived = this.state.amountReceived;
-    const changeDue = this.state.changeDue;
-    const twenties = this.state.twenties;
-    const tens = this.state.tens;
-    const fives = this.state.fives;
-    const ones = this.state.ones;
-    const quarters = this.state.quarters;
-    const dimes = this.state.dimes;
-    const nickels = this.state.nickels;
-    const pennies = this.state.pennies;
-    const output = this.state.output;
-    const dollars;
+    let twenties = this.state.twenties;
+    let tens = this.state.tens;
+    let fives = this.state.fives;
+    let ones = this.state.ones;
+    let quarters = this.state.quarters;
+    let dimes = this.state.dimes;
+    let nickels = this.state.nickels;
+    let pennies = this.state.pennies;
+    let dollars = this.state.dollars;
+    var changeDue, change;
 
     changeDue = amountReceived - amountDue;
-    dollars = int(amountReceived - amountDue);
-    change = changeDue - dollars;
-    twenites = Math.floor(changeDue/20);
-    tens = Math.floor(((changeDue) - (twenties * 20)) / 10);
-    fives = Math.floor(((changeDue) - (twenties* 20) - (tens * 10)) / 5);     
-    ones = Math.floor((((changeDue) - (quarters * 5) - (dimes * 10) - (fives * 5))) / 1);
-
-    quarters = Math.floor(change / 25);
-    dimes = Math.floor(((change) - (quarters * 25)) / 10);
-    nickels = Math.floor(((change) - (quarters * 25) - (dimes * 10)) / 5);    
-    pennies = Math.floor(((change) - (quarters * 25) - (dimes * 10) - (nickels * 5))) / 1;
+    dollars = Math.floor(changeDue)
+    var decimalPart = changeDue - Math.floor(changeDue); 
+    var changenow = decimalPart.toFixed(2);
+    change = changenow*100;
+    console.log(change)
     
+    var twentiesbill = Math.floor(dollars/20);
+    this.setState({twenties: twentiesbill})
+    
+    var tensbill = Math.floor(((dollars) - (twentiesbill * 20)) / 10);
+    this.setState({tens: tensbill})
+    console.log(tensbill)
+    
+    
+    var fivesbill = Math.floor(((dollars) - (twentiesbill * 20) - (tensbill * 10)) / 5);
+    this.setState({fives: fivesbill}) 
+
+    var onesbill = Math.floor((((dollars) - (twentiesbill * 20) - (tensbill* 10) - (fivesbill * 5))) / 1);
+    this.setState({ones: onesbill}) 
+
+    var quartersare = Math.floor(change /25);
+    console.log(quartersare)
+    this.setState({quarters: quartersare}) 
+
+    var dimesare = Math.floor(((change) - (quartersare * 25)) / 10);
+    console.log(dimesare)
+    this.setState({dimes: dimesare}) 
+
+    var nickelsare = Math.floor(((change) - (quartersare * 25) - (dimesare * 10)) / 5); 
+    console.log(nickelsare)   
+    this.setState({nickels: nickelsare}) 
+
+    var penniesare = Math.floor(((change) - (quartersare * 25) - (dimesare * 10) - (nickelsare * 5))) / 1;
+    console.log(penniesare)
+    this.setState({pennies: penniesare}) 
     //return this.calculatedue();
-    return(this.setState({output : `Return amount is ${output}`} )
-    )
+    var output= changeDue
+    
+    this.setState({output : output} )
+    
+    
   }
 
   render() {
@@ -90,14 +115,16 @@ class App extends Component {
                 <input type= 'number'  name= 'amountReceived' value={this.state.amountReceived} onChange={this.handleChange}></input>
                 </div>
                 <br></br> 
+                <div>
                 <button  value={this.state.output} name="submit" onClick={this.handleClick}>Calculate</button>
                  <div name="output" id="output">{this.state.output}</div>
+                 </div>
               </div>
             
 
             <div className="col-8">
                 <div className="changeDue">
-                  <h4 name='changeDue'>The total change due is {this.state.changeDue}</h4>
+                  <h4 name='changeDue'>The total change due is {this.state.output}</h4>
                 </div>
              
               <br></br>
@@ -107,28 +134,28 @@ class App extends Component {
                 <label>
                   Twenties
                 </label>
-                <output id="twenties">{this.state.twenties}</output>
+                <p id="twenties">{this.state.twenties}</p>
               </div>
 
-              <div className="change" name="tens" id="tens">
+              <div className="change">
               <label>
                   Tens
                 </label>
-                <output id="tens">{this.state.tens}</output>
+                <p id="tens">{this.state.tens}</p>
               </div>
 
-              <div className="change" name="fives" id="fives">
+              <div className="change">
               <label>
                   Fives
                 </label>
-                <output id="fives">{this.state.fives}</output>
+                <p id="fives">{this.state.fives}</p>
               </div>
 
               <div className="change" name="ones" id="ones">
               <label>
                   Ones
                 </label>
-                <output id="ones">{this.state.ones}</output>
+                <p id="ones">{this.state.ones}</p>
               </div>
 
             </div>
@@ -138,28 +165,28 @@ class App extends Component {
                 <label>
                   Quarters
                 </label>
-                <output id="quarters">{this.state.quarters}</output>
+                <p id="quarters">{this.state.quarters}</p>
               </div>
 
               <div className="change" name="dimes" id="dimes">
               <label>
                   Dimes
                 </label>
-                <output id="dimes">{this.state.dimes}</output>
+                <p id="dimes">{this.state.dimes}</p>
               </div>
 
               <div className="change" name="nickels" id="nickels">
               <label>
                   Nickels
                 </label>
-                <output id="nickels">{this.state.nickels}</output>
+                <p id="nickels">{this.state.nickels}</p>
               </div>
 
               <div className="change" name="pennies" id="pennies">
               <label>
                   Pennies
                 </label>
-                <output id="pennies">{this.state.pennies}</output>
+                <p id="pennies">{this.state.pennies}</p>
               </div>
 
               </div> 
